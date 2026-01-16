@@ -410,7 +410,7 @@ if __name__ == "__main__":
     
     if num_samples % 2 != 0:
         num_samples += 1
-        print(f"调整样本数为偶数: {num_samples}")
+        print(f"Adjust the sample size to an even number: {num_samples}")
 
     change = [1, 2, 3, 1, 2, 3]  # example
 
@@ -444,12 +444,12 @@ if __name__ == "__main__":
         fea_distributions.append(fea_distribution)
         change_info_list.append(change_info)
 
-        print(f"已生成 Batch {i + 2}，变化类型: {change_type}")
+        print(f"Batch {i + 2} has been generated, its change type is: {change_type}")
 
     for i, batch in enumerate(batches):
         is_balanced, label_counts = check_label_balance(batch)
-        print(f"Batch {i + 1} 标签平衡情况: {is_balanced}")
-        print(f"Batch {i + 1} 标签分布: {label_counts}")
+        print(f"The label balance status of Batch {i + 1}: {is_balanced}")
+        print(f"The label distribution of Batch {i + 1}: {label_counts}")
 
     aligned_batches, final_uni_fea = align_feature_spaces(batches, uni_fea_batches)
 
@@ -457,48 +457,49 @@ if __name__ == "__main__":
                                 'normal_scale/Change123.xlsx')
 
     for i, (batch, fea) in enumerate(zip(batches, uni_fea_batches)):
-        print(f"Batch {i + 1} 原始特征数量: {len(fea)}, 原始数据形状: {batch.shape}")
+        print(f"The original number of features in Batch {i + 1}: {len(fea)}, the original shape: {batch.shape}")
 
     for i, batch in enumerate(aligned_batches):
-        print(f"Batch {i + 1} 对齐后数据形状: {batch.shape}")
+        print(f"The aligned shape of Batch {i + 1}: {batch.shape}")
 
-    print(f"最终特征总数: {len(final_uni_fea)}")
-    print(f"最终特征索引: {final_uni_fea}")
+    print(f"The total number of features: {len(final_uni_fea)}")
+    print(f"The index of features: {final_uni_fea}")
 
     for batch_idx, dist_dict in enumerate(fea_distributions):
-        print(f"\nBatch {batch_idx + 1} 特征分布情况:")
+        print(f"\n The distributions of features in Batch {batch_idx + 1}:")
         for feat_idx, dist_info in dist_dict.items():
             if feat_idx in final_uni_fea:
                 dist_type, mean, variance = dist_info
-                print(f"  Feature {feat_idx}: 分布类型={dist_type}, 均值={mean}, 方差={variance}")
+                print(f"  Feature {feat_idx}: distribution type ={dist_type}, mean{mean}, variance={variance}")
 
     for batch_idx, info in enumerate(change_info_list):
-        print(f"\nBatch {batch_idx + 2} 特征变化情况:")
+        print(f"\n The change type of features in Batch {batch_idx + 2}:")
 
         change_type = info['type']
         if change_type == 'distribution_change':
-            change_type_cn = "分布变化"
+            change_type_cn = "distribution change"
         elif change_type == 'space_change':
-            change_type_cn = "特征空间变化"
+            change_type_cn = "feature space change"
         elif change_type == 'space_distribution_change':
-            change_type_cn = "特征空间和分布同时变化"
+            change_type_cn = "both distribution and feature space change"
         elif change_type == 'no_change':
-            change_type_cn = "特征空间和分布均不变化"
+            change_type_cn = "no change"
 
-        print(f"  变化类型: {change_type_cn}")
+        print(f"  change type: {change_type_cn}")
 
         if 'silent_features' in info:
-            print(f"  静默特征: {info['silent_features']}")
+            print(f"  silent features: {info['silent_features']}")
         if 'new_features' in info:
-            print(f"  新增特征: {info['new_features']}")
+            print(f"  new features: {info['new_features']}")
         if 'changed_features' in info:
-            print(f"  分布变化特征: {info['changed_features']}")
+            print(f"  changed features: {info['changed_features']}")
         if 'changed_distributions' in info:
-            print(f"  分布变化特征: {info['changed_distributions']}")
+            print(f"  changed distributions: {info['changed_distributions']}")
 
         if 'distribution_changes' in info and info['distribution_changes']:
-            print("  详细分布变化信息:")
+            print("  Detailed information of distribution change:")
             for feat_idx, changes in info['distribution_changes'].items():
                 old_dist = changes['old']
                 new_dist = changes['new']
-                print(f"    特征 {feat_idx}: 从 {old_dist} 变为 {new_dist}")
+
+                print(f"    feature {feat_idx}: change from {old_dist} to {new_dist}")
